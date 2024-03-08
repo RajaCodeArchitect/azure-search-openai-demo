@@ -46,10 +46,10 @@ param formRecognizerSkuName string = 'S0'
 
 param gptDeploymentName string // Set in main.parameters.json
 param gptDeploymentCapacity int = 30
-param gptModelName string = 'gpt-35-turbo'
+param gptModelName string = 'gpt-4'
 param chatGptDeploymentName string // Set in main.parameters.json
 param chatGptDeploymentCapacity int = 30
-param chatGptModelName string = 'gpt-35-turbo'
+param chatGptModelName string = 'gpt-4'
 param embeddingDeploymentName string = 'embedding'
 param embeddingDeploymentCapacity int = 30
 param embeddingModelName string = 'text-embedding-ada-002'
@@ -107,7 +107,7 @@ module backend 'core/host/appservice.bicep' = {
   params: {
     name: !empty(backendServiceName) ? backendServiceName : '${abbrs.webSitesAppService}backend-${resourceToken}'
     location: location
-    tags: union(tags, { 'azd-service-name': 'backend' })
+    tags: union(tags, { 'azd-service-name': 'backendstale' })
     appServicePlanId: appServicePlan.outputs.id
     runtimeName: 'python'
     runtimeVersion: '3.10'
@@ -143,7 +143,7 @@ module openAi 'core/ai/cognitiveservices.bicep' = {
         model: {
           format: 'OpenAI'
           name: gptModelName
-          version: '0301'
+          version: '0125-Preview'
         }
         sku: {
           name: 'Standard'
@@ -155,7 +155,7 @@ module openAi 'core/ai/cognitiveservices.bicep' = {
         model: {
           format: 'OpenAI'
           name: chatGptModelName
-          version: '0301'
+          version: '0125-Preview'
         }
         sku: {
           name: 'Standard'
@@ -217,7 +217,7 @@ module storage 'core/storage/storage-account.bicep' = {
     tags: tags
     publicNetworkAccess: 'Enabled'
     sku: {
-      name: 'Standard_ZRS'
+      name: 'Standard_LRS'
     }
     deleteRetentionPolicy: {
       enabled: true
